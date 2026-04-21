@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузить фото | Глобус Сервис</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        .upload-hero {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .upload-form {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+        .upload-area:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        .file-info {
+            margin-top: 16px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: none;
+        }
+        .price-summary {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .total-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .status-message {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo">
+            <span class="logo-icon">🌐</span>
+            <span class="logo-text">Глобус Сервис</span>
+        </div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="services.html">Цены</a>
+            <a href="upload.html" class="active">Загрузить</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="orders.html">Статус</a>
+        </nav>
+        <button class="mobile-menu-btn">☰</button>
+    </div>
+</header>
+
+<section class="upload-hero">
+    <div class="container">
+        <h1>📷 Загрузить фото на печать</h1>
+        <p>Выберите фото, укажите параметры и отправьте заказ. Мы свяжемся с вами для подтверждения.</p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="upload-form">
+        <div class="form-group">
+            <label>📛 Ваше имя *</label>
+            <input type="text" id="clientName" placeholder="Иван Иванов">
+        </div>
+
+        <div class="form-group">
+            <label>📞 Телефон *</label>
+            <input type="tel" id="clientPhone" placeholder="+7 913 786-78-87">
+        </div>
+
+        <div class="form-group">
+            <label>📧 Email</label>
+            <input type="email" id="clientEmail" placeholder="eg89133963510@gmail.com">
+        </div>
+
+        <div class="form-group">
+            <label>🖼️ Формат печати</label>
+            <select id="photoFormat">
+                <option value="15">10x15 см — 15 ₽</option>
+                <option value="35">15x21 см (A5) — 35 ₽</option>
+                <option value="60">21x30 см (A4) — 60 ₽</option>
+                <option value="120">30x42 см (A3) — 120 ₽</option>
+                <option value="250">40x60 см (постер) — 250 ₽</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>📄 Тип бумаги</label>
+            <select id="paperType">
+                <option value="1">Глянцевая</option>
+                <option value="1">Матовая</option>
+                <option value="1.2">Шелковая (+20%)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>🖼️ Выберите фото для печати *</label>
+            <div class="upload-area" id="dropZone">
+                📸 Нажмите или перетащите фото сюда<br>
+                <small>Поддерживаются JPG, PNG, до 10 МБ</small>
+            </div>
+            <input type="file" id="fileInput" accept="image/jpeg,image/png,image/jpg" style="display: none;">
+            <div class="file-info" id="fileInfo"></div>
+        </div>
+
+        <div class="price-summary">
+            <p>Стоимость печати: <strong id="printPrice">0</strong> ₽</p>
+            <p><strong>ИТОГО К ОПЛАТЕ:</strong></p>
+            <div class="total-price" id="totalPrice">0 ₽</div>
+        </div>
+
+        <button class="btn btn-primary" id="sendButton" style="width: 100%;">🚀 ОТПРАВИТЬ ЗАКАЗ</button>
+        
+        <div class="status-message" id="statusMessage"></div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>🌐 Глобус Сервис</h4>
+                <p>Печать фотографий онлайн в Болотном. Качественно, быстро, недорого.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <p>📍 г. Болотное, ул. Московская, 34</p>
+                <p>📞 <a href="tel:+79137867887">+7 (913) 786-78-87</a></p>
+                <p>📧 <a href="mailto:eg89133963510@gmail.com">eg89133963510@gmail.com</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>Режим работы</h4>
+                <p>Пн-Пт: 9:00 - 18:00</p>
+                <p>Сб-Вс: 10:00 - 14:00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Глобус Сервис — дистанционная печать фотографий в Болотном</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+const BOT_TOKEN = '8212032906:AAEplIPRIrA0xTpKFtqJYXPVolevOaF5HfA';
+const CHAT_ID = '8076771599';
+
+let selectedFile = null;
+
+function updatePrice() {
+    const formatPrice = parseFloat(document.getElementById('photoFormat').value);
+    const paperMultiplier = parseFloat(document.getElementById('paperType').value);
+    const total = formatPrice * paperMultiplier;
+    document.getElementById('printPrice').innerText = formatPrice;
+    document.getElementById('totalPrice').innerText = total + ' ₽';
+}
+
+document.getElementById('photoFormat').addEventListener('change', updatePrice);
+document.getElementById('paperType').addEventListener('change', updatePrice);
+updatePrice();
+
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const fileInfo = document.getElementById('fileInfo');
+
+dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = '#2563eb';
+});
+dropZone.addEventListener('dragleave', () => {
+    dropZone.style.borderColor = '#cbd5e1';
+});
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = '#cbd5e1';
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length) addFile(files[0]);
+});
+fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length) addFile(e.target.files[0]);
+});
+
+function addFile(file) {
+    selectedFile = file;
+    fileInfo.style.display = 'block';
+    fileInfo.innerHTML = `✅ Выбрано: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+    fileInfo.style.background = '#dcfce7';
+}
+
+document.getElementById('sendButton').addEventListener('click', async () => {
+    const name = document.getElementById('clientName').value.trim();
+    const phone = document.getElementById('clientPhone').value.trim();
+    const email = document.getElementById('clientEmail').value.trim();
+    const format = document.getElementById('photoFormat').options[document.getElementById('photoFormat').selectedIndex].text;
+    const paper = document.getElementById('paperType').options[document.getElementById('paperType').selectedIndex].text;
+    const total = document.getElementById('totalPrice').innerText;
+    const statusDiv = document.getElementById('statusMessage');
+
+    if (!name || !phone) {
+        alert('Пожалуйста, укажите имя и телефон');
+        return;
+    }
+    if (!selectedFile) {
+        alert('Пожалуйста, выберите фото');
+        return;
+    }
+
+    statusDiv.style.display = 'block';
+    statusDiv.innerHTML = '⏳ Отправка заказа...';
+    statusDiv.style.background = '#e0f2fe';
+
+    try {
+        const orderText = `🌐 ГЛОБУС СЕРВИС - НОВЫЙ ЗАКАЗ\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📧 Email: ${email || 'не указан'}\n🖼️ Формат: ${format}\n📄 Бумага: ${paper}\n💰 Сумма: ${total}\n⏰ Время: ${new Date().toLocaleString('ru-RU')}`;
+
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: CHAT_ID, text: orderText })
+        });
+
+        const formData = new FormData();
+        formData.append('chat_id', CHAT_ID);
+        formData.append('photo', selectedFile);
+        formData.append('caption', `Фото от ${name} (${total})`);
+
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+            method: 'POST',
+            body: formData
+        });
+
+        statusDiv.innerHTML = '✅ ЗАКАЗ ОТПРАВЛЕН! Мы свяжемся с вами.';
+        statusDiv.style.background = '#dcfce7';
+        
+        document.getElementById('clientName').value = '';
+        document.getElementById('clientPhone').value = '';
+        document.getElementById('clientEmail').value = '';
+        selectedFile = null;
+        fileInfo.style.display = 'none';
+        fileInput.value = '';
+
+        setTimeout(() => statusDiv.style.display = 'none', 5000);
+    } catch (error) {
+        statusDiv.innerHTML = '❌ ОШИБКА ОТПРАВКИ. Попробуйте еще раз.';
+        statusDiv.style.background = '#fee2e2';
+    }
+});
+
+const menuBtn = document.querySelector('.mobile-menu-btn');
+const nav = document.querySelector('nav');
+if (menuBtn) {
+    menuBtn.addEventListener('click', () => nav.classList.toggle('show'));
+}
+</script>
+</body>
+</html>
